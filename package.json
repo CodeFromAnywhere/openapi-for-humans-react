@@ -25,6 +25,6 @@
     "css": "tailwindcss -o css.css",
     "dev": "concurrently \"npm:dev:tw\" \"tsc -w\""
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module"
 }
