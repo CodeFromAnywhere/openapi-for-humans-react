@@ -8,6 +8,7 @@
     "@types/react": "^18.2.79",
     "@types/web": "^0.0.111",
     "bun-types": "latest",
+    "concurrently": "^8.2.2",
     "react": "^18.2.0"
   },
   "author": "Wijnand Karsens",
@@ -19,9 +20,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:tw": "tailwindcss -w -o css.css",
+    "build": "tsc",
     "pub": "npm version patch --force && npm publish",
-    "css": "tailwindcss -o css.css"
+    "css": "tailwindcss -o css.css",
+    "dev": "concurrently \"npm:dev:tw\" \"tsc -w\""
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module"
 }
