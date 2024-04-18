@@ -23,19 +23,19 @@ export declare const OpenapiExplorer: (props: {
     setSearch: (query: string, type: SearchType) => void;
     /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
     onSubmitSearch: () => void;
-    searchType?: SearchType;
-    setSearchType?: (searchType: SearchType) => void;
+    searchType?: SearchType | undefined;
+    setSearchType?: ((searchType: SearchType) => void) | undefined;
     lastSearchResults: SearchResult[];
-    showSelectBoxes?: boolean;
+    showSelectBoxes?: boolean | undefined;
     selectedOperations?: {
         operationId: string;
         openapiId: string;
-    }[];
+    }[] | undefined;
     /** Needed to perform LLM prompts */
-    openapiKey?: string;
+    openapiKey?: string | undefined;
     /** Would require an openapi key */
-    isLlmSearchEnabled?: boolean;
+    isLlmSearchEnabled?: boolean | undefined;
     /** Probably can be done locally */
-    isSemanticSearchEnabled?: boolean;
+    isSemanticSearchEnabled?: boolean | undefined;
 }) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=OpenapiExplorer.d.ts.map

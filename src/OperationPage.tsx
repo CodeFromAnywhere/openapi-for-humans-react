@@ -1,5 +1,5 @@
 import { OpenapiDocument } from "./types";
-import { mergeObjectsArray } from "./mergeObjectsArray";
+import { mergeObjectsArray } from "from-anywhere";
 
 export type OperationState = {
   /** State to prefil form with an example from the schema */

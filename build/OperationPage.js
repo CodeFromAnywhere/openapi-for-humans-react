@@ -1,5 +1,5 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { mergeObjectsArray } from "./mergeObjectsArray";
+import { mergeObjectsArray } from "from-anywhere";
 /** Page that shows a form, docs, examples, previous runs */
 export const OperationPage = (props) => {
     const { openapi, operationId, setState, state, previousRuns } = props;
