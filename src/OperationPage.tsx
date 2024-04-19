@@ -1,5 +1,9 @@
-import { OpenapiDocument } from "./types";
-import { mergeObjectsArray } from "from-anywhere";
+"use client";
+
+import { useState } from "react";
+import { OperationDetails } from "./types";
+import { O } from "from-anywhere";
+import Markdown from "react-markdown";
 
 export type OperationState = {
   /** State to prefil form with an example from the schema */
@@ -10,36 +14,48 @@ export type OperationState = {
 
 /** Page that shows a form, docs, examples, previous runs */
 export const OperationPage = (props: {
-  openapi: OpenapiDocument;
-  operationId: string;
+  operationDetails: OperationDetails;
   state: OperationState;
   setState: (state: OperationState) => void;
   /** Can be stored locally */
   previousRuns?: { id: string; run: any }[];
 }) => {
-  const { openapi, operationId, setState, state, previousRuns } = props;
-  const allowedMethods = [
-    "get",
-    "post",
-    "put",
-    "patch",
-    "delete",
-    "head",
-    "options",
-  ];
+  const { operationDetails, setState, state, previousRuns } = props;
 
-  // todo: find operation with id from the openapi, and render that
-  const methods = openapi?.paths
-    ? mergeObjectsArray(
-        Object.keys(openapi.paths).map((path) => {
-          return {
-            [path]: Object.keys((openapi as any).paths[path]).filter((method) =>
-              allowedMethods.includes(method),
-            ),
-          };
-        }),
-      )
-    : undefined;
-
-  return <div>{JSON.stringify(methods)}</div>;
+  const [formData, setFormData] = useState<O | undefined>({});
+  return (
+    <div className="p-20">
+      <Markdown
+        components={{
+          h1: (props) => <h1 className="text-3xl py-8">{props.children}</h1>,
+          h2: (props) => <h2 className="text-2xl py-8">{props.children}</h2>,
+          code: (props) => <code className="font-bold">{props.children}</code>,
+          li: (props) => <li className="list-disc list-inside" {...props} />,
+          a: (props) => <a className="text-blue-500" {...props} />,
+          p: (props) => <p className="py-2" {...props} />,
+          pre: (props) => (
+            <pre
+              className="w-full p-4 my-4 border border-orange-300"
+              {...props}
+            />
+          ),
+        }}
+      >
+        {operationDetails.operation?.description ||
+          operationDetails.operation?.summary}
+      </Markdown>
+      {/* <ReactJsonSchemaForm
+        schema={operationDetails.resolvedRequestBodySchema}
+        formData={formData}
+        id={operationDetails.id}
+        // TODO: remove this and alter the schema as booleans should then be strings
+        isBooleanTextField={false}
+        onChange={(v) => setFormData(v)}
+        onSubmit={() => {
+          console.log("SUBMIT BUTTON HIT");
+        }}
+        variableJsonSchema={undefined}
+      /> */}
+    </div>
+  );
 };

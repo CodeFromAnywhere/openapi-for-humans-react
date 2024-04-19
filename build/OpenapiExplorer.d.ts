@@ -1,5 +1,6 @@
-import { OpenapiOperationObject } from "from-anywhere";
-import { OpenapiDocument, OpenapiStatus, SearchResult, SearchType } from "./types";
+import { O } from "from-anywhere";
+import { OpenapiDetails, SearchResult, SearchType } from "./types";
+import { ForwardRefExoticComponent, ReactNode } from "react";
 /**
  * Component to search through one or multiple OpenAPIs.
  *
@@ -10,30 +11,25 @@ import { OpenapiDocument, OpenapiStatus, SearchResult, SearchType } from "./type
  * It could help you in the process of choosing the right services and endpoints for bigger tasks.
  *
  * It would help to create a subset of OpenAPI Operations before starting to make an ActionSchema.
+ *
+ * NB: The Active Operation Div is marked with `active-operation` so you can do stuff with it.
  */
 export declare const OpenapiExplorer: (props: {
-    openapis: {
-        openapiId: string;
-        document: OpenapiDocument;
-        operations: {
-            openapiId: string;
-            path: string;
-            method: string;
-            operation: OpenapiOperationObject;
-        }[];
-        status?: OpenapiStatus;
-    }[];
+    openapis: OpenapiDetails[];
+    /** Current openapiId, if any */
+    openapiId?: string;
+    /** Current operationId, if any */
+    operationId?: string;
     /** Function to refetch one or more openapi(s) if needed */
     onRefreshOpenapis: (openapiIds: string[]) => void;
-    search: string;
-    setSearch: (query: string, type: SearchType) => void;
     /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
     onSubmitSearch: () => void;
     searchType?: SearchType;
-    LinkComponent?: (props: {
-        href: string;
-        children: JSX.Element;
-    }) => JSX.Element;
+    /** NB: Took the typing from next.js. Not sure if this will work with other Link components. */
+    LinkComponent?: ForwardRefExoticComponent<{
+        href: string | O;
+        children: ReactNode;
+    }>;
     setSearchType?: (searchType: SearchType) => void;
     lastSearchResults: SearchResult[];
     showSelectBoxes?: boolean;

@@ -1,4 +1,4 @@
-import { OpenapiDocument } from "./types";
+import { OperationDetails } from "./types";
 export type OperationState = {
     /** State to prefil form with an example from the schema */
     exampleIndex?: number;
@@ -7,8 +7,7 @@ export type OperationState = {
 };
 /** Page that shows a form, docs, examples, previous runs */
 export declare const OperationPage: (props: {
-    openapi: OpenapiDocument;
-    operationId: string;
+    operationDetails: OperationDetails;
     state: OperationState;
     setState: (state: OperationState) => void;
     /** Can be stored locally */

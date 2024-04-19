@@ -1,11 +1,8 @@
-import { OpenapiOperationObject } from "from-anywhere";
-import {
-  OpenapiDocument,
-  OpenapiStatus,
-  SearchResult,
-  SearchType,
-} from "./types";
-import { ReactNode } from "react";
+import { O, OpenapiOperationObject, Url } from "from-anywhere";
+import { OpenapiDetails, SearchResult, SearchType } from "./types";
+import { ForwardRefExoticComponent, ReactElement, ReactNode } from "react";
+import Markdown from "react-markdown";
+import { Searchbar } from "./Searchbar";
 
 /**
  * Component to search through one or multiple OpenAPIs.
@@ -17,30 +14,27 @@ import { ReactNode } from "react";
  * It could help you in the process of choosing the right services and endpoints for bigger tasks.
  *
  * It would help to create a subset of OpenAPI Operations before starting to make an ActionSchema.
+ *
+ * NB: The Active Operation Div is marked with `active-operation` so you can do stuff with it.
  */
 export const OpenapiExplorer = (props: {
-  openapis: {
-    openapiId: string;
-    document: OpenapiDocument;
-    operations: {
-      openapiId: string;
-      path: string;
-      method: string;
-      operation: OpenapiOperationObject;
-    }[];
-    status?: OpenapiStatus;
-  }[];
+  openapis: OpenapiDetails[];
+  /** Current openapiId, if any */
+  openapiId?: string;
+  /** Current operationId, if any */
+  operationId?: string;
   /** Function to refetch one or more openapi(s) if needed */
   onRefreshOpenapis: (openapiIds: string[]) => void;
-  search: string;
-  setSearch: (query: string, type: SearchType) => void;
   /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
   onSubmitSearch: () => void;
   searchType?: SearchType;
-  LinkComponent?: (props: {
-    href: string;
-    children: JSX.Element;
-  }) => JSX.Element;
+
+  /** NB: Took the typing from next.js. Not sure if this will work with other Link components. */
+  LinkComponent?: ForwardRefExoticComponent<{
+    href: string | O;
+    children: ReactNode;
+  }>;
+
   setSearchType?: (searchType: SearchType) => void;
   lastSearchResults: SearchResult[];
   showSelectBoxes?: boolean;
@@ -52,34 +46,87 @@ export const OpenapiExplorer = (props: {
   /** Probably can be done locally */
   isSemanticSearchEnabled?: boolean;
 }) => {
-  const { openapis, LinkComponent } = props;
+  const { openapis, LinkComponent, openapiId, operationId } = props;
   /**
   - Research how to sort an openapi
   - Create a sorted navigation that sorts per openapi in the regular way
   - When searching, show matches based on summary, path, method, operationId
    */
+
+  const otherOpenapis = openapis.filter((x) =>
+    !openapiId ? true : x.openapiId !== openapiId,
+  );
+
+  const renderOpenapiHeader = (item: OpenapiDetails) => {
+    const href = "/" + item.openapiId;
+    const children = (
+      <div
+        key={item.openapiId}
+        className={`p-4 cursor-pointer ${
+          item.openapiId === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"
+        }`}
+      >
+        <p>
+          {item.openapiId} ({item.operations.length})
+        </p>
+        <p className="italic text-sm line-clamp-1">
+          {item.document?.info?.description}
+        </p>
+      </div>
+    );
+
+    return LinkComponent ? (
+      <LinkComponent href={href}>{children}</LinkComponent>
+    ) : (
+      <a href={href}>{children}</a>
+    );
+  };
+
+  const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
+
+  const renderOpenapiOperations = (item: OpenapiDetails) => {
+    return item.operations.map((operationDetails) => {
+      const href = `/${item.openapiId}/${operationDetails.id}`;
+      const isActive = operationDetails.id === operationId;
+      const children = (
+        <div
+          id={isActive ? "active-operation" : undefined}
+          className={`p-2 cursor-pointer  ${
+            isActive ? "bg-blue-200" : "hover:bg-gray-500/50"
+          }`}
+          key={`nav-${operationDetails.id}`}
+        >
+          <p className="line-clamp-1">{operationDetails.id}</p>
+
+          {operationDetails.operation.summary ? (
+            <span className="italic text-sm line-clamp-1">
+              {operationDetails.operation.summary}
+            </span>
+          ) : null}
+        </div>
+      );
+      return LinkComponent ? (
+        <LinkComponent href={href}>{children}</LinkComponent>
+      ) : (
+        <a href={href}>{children}</a>
+      );
+    });
+  };
   return (
-    <div>
-      {openapis.map((item) => {
-        const href = "/" + item.openapiId;
-        const children = (
-          <div>
-            {item.openapiId} ({item.operations.length})
-          </div>
-        );
-        return (
-          <div
-            key={item.openapiId}
-            className="p-4 hover:bg-gray-200/50 cursor-pointer"
-          >
-            {LinkComponent ? (
-              <LinkComponent href={href}>{children}</LinkComponent>
-            ) : (
-              <a href={href}>{children}</a>
-            )}
-          </div>
-        );
-      })}
+    <div className="relative">
+      {currentOpenapi ? (
+        <div className="sticky top-0">
+          <Searchbar />
+          {renderOpenapiHeader(currentOpenapi)}
+        </div>
+      ) : null}
+
+      <div>
+        {currentOpenapi ? (
+          <div>{renderOpenapiOperations(currentOpenapi)}</div>
+        ) : null}
+        {otherOpenapis.map(renderOpenapiHeader)}
+      </div>
     </div>
   );
 };

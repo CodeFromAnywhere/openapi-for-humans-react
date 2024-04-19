@@ -1,5 +1,8 @@
-import { fetchOpenapi, notEmpty } from "from-anywhere";
+import { fetchOpenapi, notEmpty, } from "from-anywhere";
 export const getOpenapiOperations = async (openapiId, openapiUrl) => {
+    if (!openapiUrl) {
+        return;
+    }
     const openapi = await fetchOpenapi(openapiUrl);
     if (!openapi?.paths) {
         return;
@@ -22,11 +25,14 @@ export const getOpenapiOperations = async (openapiId, openapiUrl) => {
         const methods = Object.keys(item).filter((method) => allowedMethods.includes(method));
         const pathMethods = methods.map((method) => {
             const operation = item[method];
+            // Get it fully resolved from the openapi. Do some research to find this function
+            const resolvedRequestBodySchema = {};
             return {
                 openapiId,
                 path,
                 method,
                 operation,
+                resolvedRequestBodySchema,
                 id: operation.operationId || path + "=" + method,
             };
         });
@@ -34,6 +40,6 @@ export const getOpenapiOperations = async (openapiId, openapiUrl) => {
     })
         .filter(notEmpty)
         .flat();
-    return { openapiId, operations, document: openapi };
+    return { openapiId, operations, document: openapi, openapiUrl };
 };
 //# sourceMappingURL=getOpenapiOperations.js.map

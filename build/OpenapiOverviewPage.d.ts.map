@@ -1,1 +1,1 @@
-{"version":3,"file":"OpenapiOverviewPage.d.ts","sourceRoot":"","sources":["../src/OpenapiOverviewPage.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,SAAS,CAAC;AAEzC,eAAO,MAAM,mBAAmB,UAAW;IACzC,cAAc,EAAE,cAAc,CAAC;CAChC,4CAeA,CAAC"}
+{"version":3,"file":"OpenapiOverviewPage.d.ts","sourceRoot":"","sources":["../src/OpenapiOverviewPage.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,SAAS,CAAC;AAEzC,eAAO,MAAM,mBAAmB,UAAW;IACzC,cAAc,EAAE,cAAc,CAAC;CAChC,4CAyBA,CAAC"}

@@ -1,25 +1,20 @@
+"use client";
 import { jsx as _jsx } from "react/jsx-runtime";
-import { mergeObjectsArray } from "from-anywhere";
+import { useState } from "react";
+import Markdown from "react-markdown";
 /** Page that shows a form, docs, examples, previous runs */
 export const OperationPage = (props) => {
-    const { openapi, operationId, setState, state, previousRuns } = props;
-    const allowedMethods = [
-        "get",
-        "post",
-        "put",
-        "patch",
-        "delete",
-        "head",
-        "options",
-    ];
-    // todo: find operation with id from the openapi, and render that
-    const methods = openapi?.paths
-        ? mergeObjectsArray(Object.keys(openapi.paths).map((path) => {
-            return {
-                [path]: Object.keys(openapi.paths[path]).filter((method) => allowedMethods.includes(method)),
-            };
-        }))
-        : undefined;
-    return _jsx("div", { children: JSON.stringify(methods) });
+    const { operationDetails, setState, state, previousRuns } = props;
+    const [formData, setFormData] = useState({});
+    return (_jsx("div", { className: "p-20", children: _jsx(Markdown, { components: {
+                h1: (props) => _jsx("h1", { className: "text-3xl py-8", children: props.children }),
+                h2: (props) => _jsx("h2", { className: "text-2xl py-8", children: props.children }),
+                code: (props) => _jsx("code", { className: "font-bold", children: props.children }),
+                li: (props) => _jsx("li", { className: "list-disc list-inside", ...props }),
+                a: (props) => _jsx("a", { className: "text-blue-500", ...props }),
+                p: (props) => _jsx("p", { className: "py-2", ...props }),
+                pre: (props) => (_jsx("pre", { className: "w-full p-4 my-4 border border-orange-300", ...props })),
+            }, children: operationDetails.operation?.description ||
+                operationDetails.operation?.summary }) }));
 };
 //# sourceMappingURL=OperationPage.js.map

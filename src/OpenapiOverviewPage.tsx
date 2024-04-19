@@ -6,15 +6,25 @@ export const OpenapiOverviewPage = (props: {
   const { openapiDetails } = props;
 
   return (
-    <div>
-      {openapiDetails.operations.map((item) => {
-        //
-        return (
-          <div key={item.operation.operationId}>
-            {item.operation.operationId}
-          </div>
-        );
-      })}
+    <div className="p-20">
+      <a className="text-blue-500" href={openapiDetails.openapiUrl}>
+        {openapiDetails.openapiUrl}
+      </a>
+
+      <p>Operations:</p>
+      <ul>
+        {openapiDetails.operations.map((item) => {
+          //
+          return (
+            <li
+              className="list-disc list-inside"
+              key={item.operation.operationId}
+            >
+              {item.operation.operationId}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };

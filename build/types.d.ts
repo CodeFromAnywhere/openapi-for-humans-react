@@ -1,5 +1,4 @@
-import { OpenapiOperationObject } from "from-anywhere";
-export type OpenapiDocument = any;
+import { OpenapiDocument, OpenapiOperationObject, OpenapiSchemaObject } from "from-anywhere";
 export type SearchType = "llm" | "semantic" | "regular";
 export type SearchResult = {
     openapiId: string;
@@ -11,14 +10,18 @@ export type SearchResult = {
 export type OpenapiStatus = "disabled" | "favorite";
 export type OpenapiDetails = {
     openapiId: string;
-    operations: {
-        /** either the operationId or path=method */
-        id: string;
-        openapiId: string;
-        path: string;
-        method: string;
-        operation: OpenapiOperationObject;
-    }[];
+    openapiUrl: string;
+    operations: OperationDetails[];
     document: OpenapiDocument;
+};
+export type OperationDetails = {
+    /** either the operationId or path=method */
+    id: string;
+    openapiId: string;
+    path: string;
+    method: string;
+    operation: OpenapiOperationObject;
+    /** Can be added for convienience. Must resolve al references from the openapi */
+    resolvedRequestBodySchema: OpenapiSchemaObject;
 };
 //# sourceMappingURL=types.d.ts.map
