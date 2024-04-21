@@ -17,31 +17,31 @@ import { ForwardRefExoticComponent, ReactNode } from "react";
 export declare const OpenapiExplorer: (props: {
     openapis: OpenapiDetails[];
     /** Current openapiId, if any */
-    openapiId?: string;
+    openapiId?: string | undefined;
     /** Current operationId, if any */
-    operationId?: string;
+    operationId?: string | undefined;
     /** Function to refetch one or more openapi(s) if needed */
     onRefreshOpenapis: (openapiIds: string[]) => void;
     /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
     onSubmitSearch: () => void;
-    searchType?: SearchType;
+    searchType?: SearchType | undefined;
     /** NB: Took the typing from next.js. Not sure if this will work with other Link components. */
     LinkComponent?: ForwardRefExoticComponent<{
         href: string | O;
         children: ReactNode;
-    }>;
-    setSearchType?: (searchType: SearchType) => void;
+    }> | undefined;
+    setSearchType?: ((searchType: SearchType) => void) | undefined;
     lastSearchResults: SearchResult[];
-    showSelectBoxes?: boolean;
+    showSelectBoxes?: boolean | undefined;
     selectedOperations?: {
         operationId: string;
         openapiId: string;
-    }[];
+    }[] | undefined;
     /** Needed to perform LLM prompts */
-    openapiKey?: string;
+    openapiKey?: string | undefined;
     /** Would require an openapi key */
-    isLlmSearchEnabled?: boolean;
+    isLlmSearchEnabled?: boolean | undefined;
     /** Probably can be done locally */
-    isSemanticSearchEnabled?: boolean;
+    isSemanticSearchEnabled?: boolean | undefined;
 }) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=OpenapiExplorer.d.ts.map

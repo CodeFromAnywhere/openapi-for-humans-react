@@ -62,5 +62,6 @@ export const getOpenapiOperations = async (
     .filter(notEmpty)
     .flat();
 
+  //@ts-ignore
   return { openapiId, operations, document: openapi, openapiUrl };
 };

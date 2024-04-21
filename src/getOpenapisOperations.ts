@@ -1,24 +1,23 @@
 import { notEmpty } from "from-anywhere";
 import { getOpenapiOperations } from "./getOpenapiOperations";
+import { OpenapiListItem } from "./types";
 
 export const getOpenapisOperations = async (
-  openapiUrlObject: {
-    [openapiId: string]: string;
-  },
+  openapiList: OpenapiListItem[],
   selectedIds?: string[] | undefined,
 ) => {
-  const keys = Object.keys(openapiUrlObject).filter((id) =>
-    selectedIds && selectedIds.length > 0 ? selectedIds.includes(id) : true,
+  const filteredList = openapiList.filter((item) =>
+    selectedIds && selectedIds.length > 0
+      ? selectedIds.includes(item.key)
+      : true,
   );
 
   return (
     await Promise.all(
-      keys.map(async (openapiId) => {
-        const openapiUrl = openapiUrlObject[
-          openapiId as keyof typeof openapiUrlObject
-        ] as string | undefined;
+      filteredList.map(async (item) => {
+        const openapiUrl = `https://${item.key}.dataman.ai/${item.key}.json`;
 
-        return getOpenapiOperations(openapiId, openapiUrl);
+        return getOpenapiOperations(item.key, openapiUrl);
       }),
     )
   ).filter(notEmpty);

@@ -26,16 +26,16 @@ export const Searchbar = () => {
   return (
     <div className="flex flex-row">
       <input
-        value={query}
+        //value={query}
         placeholder="Search"
-        onChange={(e) => {
-          setQuery(e.target.value);
-          window.history.replaceState(
-            null,
-            document.title,
-            "?query=" + e.target.value,
-          );
-        }}
+        // onChange={(e) => {
+        //   setQuery(e.target.value);
+        //   window.history.replaceState(
+        //     null,
+        //     document.title,
+        //     "?query=" + e.target.value,
+        //   );
+        // }}
         className="border border-black p-2"
       />
       <button className="bg-green-500 w-full">Search</button>

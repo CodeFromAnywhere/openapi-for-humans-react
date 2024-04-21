@@ -17,9 +17,17 @@ export const Searchbar = () => {
         })).query;
         setQuery(query);
     }, []);
-    return (_jsxs("div", { className: "flex flex-row", children: [_jsx("input", { value: query, placeholder: "Search", onChange: (e) => {
-                    setQuery(e.target.value);
-                    window.history.replaceState(null, document.title, "?query=" + e.target.value);
-                }, className: "border border-black p-2" }), _jsx("button", { className: "bg-green-500 w-full", children: "Search" })] }));
+    return (_jsxs("div", { className: "flex flex-row", children: [_jsx("input", { 
+                //value={query}
+                placeholder: "Search", 
+                // onChange={(e) => {
+                //   setQuery(e.target.value);
+                //   window.history.replaceState(
+                //     null,
+                //     document.title,
+                //     "?query=" + e.target.value,
+                //   );
+                // }}
+                className: "border border-black p-2" }), _jsx("button", { className: "bg-green-500 w-full", children: "Search" })] }));
 };
 //# sourceMappingURL=Searchbar.js.map

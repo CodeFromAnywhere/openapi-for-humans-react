@@ -21,12 +21,14 @@ export const OpenapiExplorer = (props) => {
     - When searching, show matches based on summary, path, method, operationId
      */
     const otherOpenapis = openapis.filter((x) => !openapiId ? true : x.openapiId !== openapiId);
+    const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
+    const branding = currentOpenapi?.document.info?.branding;
+    console.log({ branding });
     const renderOpenapiHeader = (item) => {
         const href = "/" + item.openapiId;
-        const children = (_jsxs("div", { className: `p-4 cursor-pointer ${item.openapiId === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"}`, children: [_jsxs("p", { children: [item.openapiId, " (", item.operations.length, ")"] }), _jsx("p", { className: "italic text-sm line-clamp-1", children: item.document?.info?.description })] }, item.openapiId));
+        const children = (_jsxs("div", { className: `p-4 cursor-pointer ${item.openapiId === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"}`, children: [_jsxs("p", { children: [item.openapiId, " (", item.operations.length, ")"] }), _jsx("p", { className: "italic text-sm line-clamp-1", children: String(item.document?.info?.description) })] }, item.openapiId));
         return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children })) : (_jsx("a", { href: href, children: children }));
     };
-    const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
     const renderOpenapiOperations = (item) => {
         return item.operations.map((operationDetails) => {
             const href = `/${item.openapiId}/${operationDetails.id}`;
@@ -35,6 +37,6 @@ export const OpenapiExplorer = (props) => {
             return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children })) : (_jsx("a", { href: href, children: children }));
         });
     };
-    return (_jsxs("div", { className: "relative", children: [currentOpenapi ? (_jsxs("div", { className: "sticky top-0", children: [_jsx(Searchbar, {}), renderOpenapiHeader(currentOpenapi)] })) : null, _jsxs("div", { children: [currentOpenapi ? (_jsx("div", { children: renderOpenapiOperations(currentOpenapi) })) : null, otherOpenapis.map(renderOpenapiHeader)] })] }));
+    return (_jsxs("div", { className: "relative", style: { backgroundColor: branding?.primaryColorHex }, children: [currentOpenapi ? (_jsxs("div", { className: "sticky top-0", children: [branding?.logoImageUrl ? (_jsx("div", { children: _jsx("img", { src: branding.logoImageUrl, width: "200", height: "200" }) })) : null, _jsx(Searchbar, {}), renderOpenapiHeader(currentOpenapi)] })) : null, _jsxs("div", { children: [currentOpenapi ? (_jsx("div", { children: renderOpenapiOperations(currentOpenapi) })) : null, otherOpenapis.map(renderOpenapiHeader)] })] }));
 };
 //# sourceMappingURL=OpenapiExplorer.js.map

@@ -1,10 +1,13 @@
-import {
-  OpenapiDocument,
-  OpenapiOperationObject,
-  OpenapiSchemaObject,
-} from "from-anywhere";
+import { OpenapiOperationObject, OpenapiSchemaObject } from "from-anywhere";
+import { OpenAPIDocument } from "actionschema/types";
 
 export type SearchType = "llm" | "semantic" | "regular";
+
+export type OpenapiListItem = {
+  key: string;
+  title: string;
+  originalUrl: string;
+};
 
 export type SearchResult = {
   openapiId: string;
@@ -20,7 +23,7 @@ export type OpenapiDetails = {
   openapiId: string;
   openapiUrl: string;
   operations: OperationDetails[];
-  document: OpenapiDocument;
+  document: OpenAPIDocument;
 };
 
 export type OperationDetails = {

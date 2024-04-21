@@ -1,7 +1,6 @@
-import { O, OpenapiOperationObject, Url } from "from-anywhere";
+import { O, Url } from "from-anywhere";
 import { OpenapiDetails, SearchResult, SearchType } from "./types";
-import { ForwardRefExoticComponent, ReactElement, ReactNode } from "react";
-import Markdown from "react-markdown";
+import { ForwardRefExoticComponent, ReactNode } from "react";
 import { Searchbar } from "./Searchbar";
 
 /**
@@ -56,7 +55,10 @@ export const OpenapiExplorer = (props: {
   const otherOpenapis = openapis.filter((x) =>
     !openapiId ? true : x.openapiId !== openapiId,
   );
+  const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
+  const branding = currentOpenapi?.document.info?.branding;
 
+  console.log({ branding });
   const renderOpenapiHeader = (item: OpenapiDetails) => {
     const href = "/" + item.openapiId;
     const children = (
@@ -70,7 +72,7 @@ export const OpenapiExplorer = (props: {
           {item.openapiId} ({item.operations.length})
         </p>
         <p className="italic text-sm line-clamp-1">
-          {item.document?.info?.description}
+          {String(item.document?.info?.description)}
         </p>
       </div>
     );
@@ -81,8 +83,6 @@ export const OpenapiExplorer = (props: {
       <a href={href}>{children}</a>
     );
   };
-
-  const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
 
   const renderOpenapiOperations = (item: OpenapiDetails) => {
     return item.operations.map((operationDetails) => {
@@ -112,10 +112,19 @@ export const OpenapiExplorer = (props: {
       );
     });
   };
+
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      style={{ backgroundColor: branding?.primaryColorHex }}
+    >
       {currentOpenapi ? (
         <div className="sticky top-0">
+          {branding?.logoImageUrl ? (
+            <div>
+              <img src={branding.logoImageUrl} width="200" height="200" />
+            </div>
+          ) : null}
           <Searchbar />
           {renderOpenapiHeader(currentOpenapi)}
         </div>

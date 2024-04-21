@@ -1,0 +1,1 @@
+{"version":3,"file":"MatchingText.d.ts","sourceRoot":"","sources":["../src/MatchingText.tsx"],"names":[],"mappings":"AAAA;;GAEG;AACH,eAAO,MAAM,YAAY,UAAW;IAClC,IAAI,EAAE,MAAM,CAAC;IACb,MAAM,EAAE,MAAM,CAAC;IACf,oBAAoB,EAAE,MAAM,CAAC;IAC7B,kBAAkB,EAAE,MAAM,CAAC;IAC3B,cAAc,CAAC,EAAE,MAAM,CAAC;CACzB,4CA8EA,CAAC"}

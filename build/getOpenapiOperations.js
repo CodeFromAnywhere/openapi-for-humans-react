@@ -40,6 +40,7 @@ export const getOpenapiOperations = async (openapiId, openapiUrl) => {
     })
         .filter(notEmpty)
         .flat();
+    //@ts-ignore
     return { openapiId, operations, document: openapi, openapiUrl };
 };
 //# sourceMappingURL=getOpenapiOperations.js.map
