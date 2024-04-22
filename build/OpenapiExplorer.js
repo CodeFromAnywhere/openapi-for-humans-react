@@ -1,5 +1,7 @@
-import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
-import { Searchbar } from "./Searchbar";
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { MatchingText } from "./MatchingText";
+import { makeComplexUrlStore } from "./makeComplexUrlStore";
 /**
  * Component to search through one or multiple OpenAPIs.
  *
@@ -15,28 +17,56 @@ import { Searchbar } from "./Searchbar";
  */
 export const OpenapiExplorer = (props) => {
     const { openapis, LinkComponent, openapiId, operationId } = props;
+    const useStore = makeComplexUrlStore();
+    const [search, setSearch] = useStore("search");
+    // const [search, setSearch] = useState("");
+    const filteredOpenapis = !search || search.trim() === ""
+        ? openapis
+        : openapis.filter((item) => item.key.toLowerCase().includes(search.toLowerCase()) ||
+            item.title?.toLowerCase().includes(search.toLowerCase()));
     /**
     - Research how to sort an openapi
     - Create a sorted navigation that sorts per openapi in the regular way
     - When searching, show matches based on summary, path, method, operationId
      */
-    const otherOpenapis = openapis.filter((x) => !openapiId ? true : x.openapiId !== openapiId);
-    const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
-    const branding = currentOpenapi?.document.info?.branding;
-    console.log({ branding });
+    // const otherOpenapis = openapis.filter((x) =>
+    //   !openapiId ? true : x.openapiId !== openapiId,
+    // );
+    // const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
+    // const branding = currentOpenapi?.document.info?.branding;
     const renderOpenapiHeader = (item) => {
-        const href = "/" + item.openapiId;
-        const children = (_jsxs("div", { className: `p-4 cursor-pointer ${item.openapiId === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"}`, children: [_jsxs("p", { children: [item.openapiId, " (", item.operations.length, ")"] }), _jsx("p", { className: "italic text-sm line-clamp-1", children: String(item.document?.info?.description) })] }, item.openapiId));
-        return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children })) : (_jsx("a", { href: href, children: children }));
+        window.location.search;
+        const href = "/" + item.key + window.location.search;
+        const children = (_jsx("div", { className: `p-4 cursor-pointer ${item.key === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"}`, children: _jsx(MatchingText, { defaultTextClassName: "", matchTextClassName: "text-blue-500", search: search || "", text: item.title || item.key }) }));
+        return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children }, item.key)) : (_jsx("a", { href: href, children: children }, item.key));
     };
-    const renderOpenapiOperations = (item) => {
-        return item.operations.map((operationDetails) => {
-            const href = `/${item.openapiId}/${operationDetails.id}`;
-            const isActive = operationDetails.id === operationId;
-            const children = (_jsxs("div", { id: isActive ? "active-operation" : undefined, className: `p-2 cursor-pointer  ${isActive ? "bg-blue-200" : "hover:bg-gray-500/50"}`, children: [_jsx("p", { className: "line-clamp-1", children: operationDetails.id }), operationDetails.operation.summary ? (_jsx("span", { className: "italic text-sm line-clamp-1", children: operationDetails.operation.summary })) : null] }, `nav-${operationDetails.id}`));
-            return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children })) : (_jsx("a", { href: href, children: children }));
-        });
-    };
-    return (_jsxs("div", { className: "relative", style: { backgroundColor: branding?.primaryColorHex }, children: [currentOpenapi ? (_jsxs("div", { className: "sticky top-0", children: [branding?.logoImageUrl ? (_jsx("div", { children: _jsx("img", { src: branding.logoImageUrl, width: "200", height: "200" }) })) : null, _jsx(Searchbar, {}), renderOpenapiHeader(currentOpenapi)] })) : null, _jsxs("div", { children: [currentOpenapi ? (_jsx("div", { children: renderOpenapiOperations(currentOpenapi) })) : null, otherOpenapis.map(renderOpenapiHeader)] })] }));
+    // const renderOpenapiOperations = (item: OpenapiDetails) => {
+    //   return item.operations.map((operationDetails) => {
+    //     const href = `/${item.openapiId}/${operationDetails.id}`;
+    //     const isActive = operationDetails.id === operationId;
+    //     const children = (
+    //       <div
+    //         id={isActive ? "active-operation" : undefined}
+    //         className={`p-2 cursor-pointer  ${
+    //           isActive ? "bg-blue-200" : "hover:bg-gray-500/50"
+    //         }`}
+    //         key={`nav-${operationDetails.id}`}
+    //       >
+    //         <p className="line-clamp-1">{operationDetails.id}</p>
+    //         {operationDetails.operation.summary ? (
+    //           <span className="italic text-sm line-clamp-1">
+    //             {operationDetails.operation.summary}
+    //           </span>
+    //         ) : null}
+    //       </div>
+    //     );
+    //     return LinkComponent ? (
+    //       <LinkComponent href={href}>{children}</LinkComponent>
+    //     ) : (
+    //       <a href={href}>{children}</a>
+    //     );
+    //   });
+    // };
+    return (_jsxs("div", { className: "relative", children: [_jsx("input", { type: "text", placeholder: "Search", className: "p-2 m-2 bg-transparent", value: search, onChange: (e) => setSearch(e.target.value) }), _jsx("div", { children: filteredOpenapis.map(renderOpenapiHeader) })] }));
 };
 //# sourceMappingURL=OpenapiExplorer.js.map

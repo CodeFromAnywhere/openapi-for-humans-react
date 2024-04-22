@@ -1,5 +1,5 @@
 import { O } from "from-anywhere";
-import { OpenapiDetails, SearchResult, SearchType } from "./types";
+import { OpenapiListItem, SearchResult, SearchType } from "./types";
 import { ForwardRefExoticComponent, ReactNode } from "react";
 /**
  * Component to search through one or multiple OpenAPIs.
@@ -15,33 +15,30 @@ import { ForwardRefExoticComponent, ReactNode } from "react";
  * NB: The Active Operation Div is marked with `active-operation` so you can do stuff with it.
  */
 export declare const OpenapiExplorer: (props: {
-    openapis: OpenapiDetails[];
+    openapis: OpenapiListItem[];
     /** Current openapiId, if any */
-    openapiId?: string | undefined;
+    openapiId?: string;
     /** Current operationId, if any */
-    operationId?: string | undefined;
+    operationId?: string;
     /** Function to refetch one or more openapi(s) if needed */
-    onRefreshOpenapis: (openapiIds: string[]) => void;
     /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
-    onSubmitSearch: () => void;
-    searchType?: SearchType | undefined;
+    searchType?: SearchType;
     /** NB: Took the typing from next.js. Not sure if this will work with other Link components. */
     LinkComponent?: ForwardRefExoticComponent<{
         href: string | O;
         children: ReactNode;
-    }> | undefined;
-    setSearchType?: ((searchType: SearchType) => void) | undefined;
+    }>;
     lastSearchResults: SearchResult[];
-    showSelectBoxes?: boolean | undefined;
+    showSelectBoxes?: boolean;
     selectedOperations?: {
         operationId: string;
         openapiId: string;
-    }[] | undefined;
+    }[];
     /** Needed to perform LLM prompts */
-    openapiKey?: string | undefined;
+    openapiKey?: string;
     /** Would require an openapi key */
-    isLlmSearchEnabled?: boolean | undefined;
+    isLlmSearchEnabled?: boolean;
     /** Probably can be done locally */
-    isSemanticSearchEnabled?: boolean | undefined;
+    isSemanticSearchEnabled?: boolean;
 }) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=OpenapiExplorer.d.ts.map

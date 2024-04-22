@@ -1,7 +1,16 @@
+"use client";
+
 import { O, Url } from "from-anywhere";
-import { OpenapiDetails, SearchResult, SearchType } from "./types";
-import { ForwardRefExoticComponent, ReactNode } from "react";
+import {
+  OpenapiDetails,
+  OpenapiListItem,
+  SearchResult,
+  SearchType,
+} from "./types";
+import { ForwardRefExoticComponent, ReactNode, useState } from "react";
 import { Searchbar } from "./Searchbar";
+import { MatchingText } from "./MatchingText";
+import { makeComplexUrlStore } from "./makeComplexUrlStore";
 
 /**
  * Component to search through one or multiple OpenAPIs.
@@ -17,15 +26,15 @@ import { Searchbar } from "./Searchbar";
  * NB: The Active Operation Div is marked with `active-operation` so you can do stuff with it.
  */
 export const OpenapiExplorer = (props: {
-  openapis: OpenapiDetails[];
+  openapis: OpenapiListItem[];
   /** Current openapiId, if any */
   openapiId?: string;
   /** Current operationId, if any */
   operationId?: string;
   /** Function to refetch one or more openapi(s) if needed */
-  onRefreshOpenapis: (openapiIds: string[]) => void;
+  // onRefreshOpenapis: (openapiIds: string[]) => void;
   /** LLM Search requires a custom submit, others go instant (maybe with debounce) */
-  onSubmitSearch: () => void;
+  //onSubmitSearch: () => void;
   searchType?: SearchType;
 
   /** NB: Took the typing from next.js. Not sure if this will work with other Link components. */
@@ -34,7 +43,7 @@ export const OpenapiExplorer = (props: {
     children: ReactNode;
   }>;
 
-  setSearchType?: (searchType: SearchType) => void;
+  //setSearchType?: (searchType: SearchType) => void;
   lastSearchResults: SearchResult[];
   showSelectBoxes?: boolean;
   selectedOperations?: { operationId: string; openapiId: string }[];
@@ -46,79 +55,94 @@ export const OpenapiExplorer = (props: {
   isSemanticSearchEnabled?: boolean;
 }) => {
   const { openapis, LinkComponent, openapiId, operationId } = props;
+  const useStore = makeComplexUrlStore<{ search: string | undefined }>();
+  const [search, setSearch] = useStore("search");
+
+  // const [search, setSearch] = useState("");
+  const filteredOpenapis =
+    !search || search.trim() === ""
+      ? openapis
+      : openapis.filter(
+          (item) =>
+            item.key.toLowerCase().includes(search.toLowerCase()) ||
+            item.title?.toLowerCase().includes(search.toLowerCase()),
+        );
   /**
   - Research how to sort an openapi
   - Create a sorted navigation that sorts per openapi in the regular way
   - When searching, show matches based on summary, path, method, operationId
    */
 
-  const otherOpenapis = openapis.filter((x) =>
-    !openapiId ? true : x.openapiId !== openapiId,
-  );
-  const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
-  const branding = currentOpenapi?.document.info?.branding;
+  // const otherOpenapis = openapis.filter((x) =>
+  //   !openapiId ? true : x.openapiId !== openapiId,
+  // );
+  // const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
+  // const branding = currentOpenapi?.document.info?.branding;
 
-  console.log({ branding });
-  const renderOpenapiHeader = (item: OpenapiDetails) => {
-    const href = "/" + item.openapiId;
+  const renderOpenapiHeader = (item: OpenapiListItem) => {
+    window.location.search;
+    const href = "/" + item.key + window.location.search;
     const children = (
       <div
-        key={item.openapiId}
         className={`p-4 cursor-pointer ${
-          item.openapiId === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"
+          item.key === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"
         }`}
       >
-        <p>
-          {item.openapiId} ({item.operations.length})
-        </p>
-        <p className="italic text-sm line-clamp-1">
-          {String(item.document?.info?.description)}
-        </p>
+        <MatchingText
+          defaultTextClassName=""
+          matchTextClassName="text-blue-500"
+          search={search || ""}
+          text={item.title || item.key}
+        />
       </div>
     );
 
     return LinkComponent ? (
-      <LinkComponent href={href}>{children}</LinkComponent>
+      <LinkComponent key={item.key} href={href}>
+        {children}
+      </LinkComponent>
     ) : (
-      <a href={href}>{children}</a>
+      <a key={item.key} href={href}>
+        {children}
+      </a>
     );
   };
 
-  const renderOpenapiOperations = (item: OpenapiDetails) => {
-    return item.operations.map((operationDetails) => {
-      const href = `/${item.openapiId}/${operationDetails.id}`;
-      const isActive = operationDetails.id === operationId;
-      const children = (
-        <div
-          id={isActive ? "active-operation" : undefined}
-          className={`p-2 cursor-pointer  ${
-            isActive ? "bg-blue-200" : "hover:bg-gray-500/50"
-          }`}
-          key={`nav-${operationDetails.id}`}
-        >
-          <p className="line-clamp-1">{operationDetails.id}</p>
+  // const renderOpenapiOperations = (item: OpenapiDetails) => {
+  //   return item.operations.map((operationDetails) => {
+  //     const href = `/${item.openapiId}/${operationDetails.id}`;
+  //     const isActive = operationDetails.id === operationId;
+  //     const children = (
+  //       <div
+  //         id={isActive ? "active-operation" : undefined}
+  //         className={`p-2 cursor-pointer  ${
+  //           isActive ? "bg-blue-200" : "hover:bg-gray-500/50"
+  //         }`}
+  //         key={`nav-${operationDetails.id}`}
+  //       >
+  //         <p className="line-clamp-1">{operationDetails.id}</p>
 
-          {operationDetails.operation.summary ? (
-            <span className="italic text-sm line-clamp-1">
-              {operationDetails.operation.summary}
-            </span>
-          ) : null}
-        </div>
-      );
-      return LinkComponent ? (
-        <LinkComponent href={href}>{children}</LinkComponent>
-      ) : (
-        <a href={href}>{children}</a>
-      );
-    });
-  };
+  //         {operationDetails.operation.summary ? (
+  //           <span className="italic text-sm line-clamp-1">
+  //             {operationDetails.operation.summary}
+  //           </span>
+  //         ) : null}
+  //       </div>
+  //     );
+  //     return LinkComponent ? (
+  //       <LinkComponent href={href}>{children}</LinkComponent>
+  //     ) : (
+  //       <a href={href}>{children}</a>
+  //     );
+  //   });
+  // };
 
   return (
     <div
       className="relative"
-      style={{ backgroundColor: branding?.primaryColorHex }}
+      //   style={{ backgroundColor: branding?.primaryColorHex }}
     >
-      {currentOpenapi ? (
+      {/* {currentOpenapi ? (
         <div className="sticky top-0">
           {branding?.logoImageUrl ? (
             <div>
@@ -128,13 +152,20 @@ export const OpenapiExplorer = (props: {
           <Searchbar />
           {renderOpenapiHeader(currentOpenapi)}
         </div>
-      ) : null}
+      ) : null} */}
 
+      <input
+        type="text"
+        placeholder="Search"
+        className="p-2 m-2 bg-transparent"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <div>
-        {currentOpenapi ? (
+        {/* {currentOpenapi ? (
           <div>{renderOpenapiOperations(currentOpenapi)}</div>
-        ) : null}
-        {otherOpenapis.map(renderOpenapiHeader)}
+        ) : null} */}
+        {filteredOpenapis.map(renderOpenapiHeader)}
       </div>
     </div>
   );

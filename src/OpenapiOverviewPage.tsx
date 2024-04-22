@@ -4,6 +4,7 @@ import { useState } from "react";
 import { OpenapiDetails } from "./types";
 import { MatchingText } from "./MatchingText";
 import Markdown from "react-markdown";
+import { makeComplexUrlStore } from "./makeComplexUrlStore";
 
 export const OpenapiOverviewPage = (props: {
   openapiDetails: OpenapiDetails;
@@ -13,10 +14,11 @@ export const OpenapiOverviewPage = (props: {
   const [search, setSearch] = useState("");
 
   const filteredOperations =
-    search.trim() === ""
+    !search || search.trim() === ""
       ? openapiDetails.operations
       : openapiDetails.operations.filter(
           (item) =>
+            !search ||
             item.id.toLowerCase().includes(search.toLowerCase()) ||
             item.operation.summary
               ?.toLowerCase()
@@ -73,7 +75,7 @@ export const OpenapiOverviewPage = (props: {
       <input
         type="text"
         placeholder="Search"
-        className="p-2 m-2"
+        className="p-2 m-2  bg-transparent"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -87,7 +89,7 @@ export const OpenapiOverviewPage = (props: {
             >
               <a href={`/${openapiDetails.openapiId}/${item.id}`}>
                 <MatchingText
-                  search={search}
+                  search={search || ""}
                   text={`${item.id} - ${item.operation.summary}`}
                   defaultTextClassName=""
                   matchTextClassName="text-blue-500"

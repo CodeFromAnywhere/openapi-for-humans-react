@@ -14,6 +14,6 @@ export declare const OperationPage: (props: {
     previousRuns?: {
         id: string;
         run: any;
-    }[] | undefined;
+    }[];
 }) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=OperationPage.d.ts.map
