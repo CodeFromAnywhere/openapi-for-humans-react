@@ -15,7 +15,7 @@ export const getOpenapisOperations = async (
   return (
     await Promise.all(
       filteredList.map(async (item) => {
-        const openapiUrl = `https://${item.key}.dataman.ai/${item.key}.json`;
+        const openapiUrl = `https://openapi.actionschema.com/${item.key}/openapi.json`;
 
         return getOpenapiOperations(item.key, openapiUrl);
       }),

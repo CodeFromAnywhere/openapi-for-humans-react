@@ -35,8 +35,9 @@ export const OpenapiExplorer = (props) => {
     // const currentOpenapi = openapis.find((x) => x.openapiId === openapiId);
     // const branding = currentOpenapi?.document.info?.branding;
     const renderOpenapiHeader = (item) => {
-        window.location.search;
-        const href = "/" + item.key + window.location.search;
+        const href = "/" +
+            item.key +
+            (typeof window === "undefined" ? "" : window.location.search);
         const children = (_jsx("div", { className: `p-4 cursor-pointer ${item.key === openapiId ? "bg-green-500" : "hover:bg-gray-500/50"}`, children: _jsx(MatchingText, { defaultTextClassName: "", matchTextClassName: "text-blue-500", search: search || "", text: item.title || item.key }) }));
         return LinkComponent ? (_jsx(LinkComponent, { href: href, children: children }, item.key)) : (_jsx("a", { href: href, children: children }, item.key));
     };

@@ -38,7 +38,10 @@ export const makeComplexUrlStore = () => {
         const setter = async (newValue) => {
             const newState = { ...parsedQuery, [queryKey]: newValue };
             const newQueryString = qs.stringify(newState, qsParseOptions);
-            const pathname = typeof window === "undefined" ? "/" : window.location.pathname;
+            if (typeof window === "undefined") {
+                return false;
+            }
+            const pathname = window.location.pathname;
             setQueryString(newQueryString);
             window.history.replaceState({}, document.title, `${pathname}?${newQueryString}`);
             return true;

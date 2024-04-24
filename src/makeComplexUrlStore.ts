@@ -52,8 +52,12 @@ export const makeComplexUrlStore = <T extends O>(): (<K extends Keys<T>>(
     const setter = async (newValue: T[K] | undefined) => {
       const newState = { ...parsedQuery, [queryKey]: newValue };
       const newQueryString = qs.stringify(newState, qsParseOptions);
-      const pathname =
-        typeof window === "undefined" ? "/" : window.location.pathname;
+
+      if (typeof window === "undefined") {
+        return false;
+      }
+
+      const pathname = window.location.pathname;
 
       setQueryString(newQueryString);
 

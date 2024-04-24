@@ -80,8 +80,10 @@ export const OpenapiExplorer = (props: {
   // const branding = currentOpenapi?.document.info?.branding;
 
   const renderOpenapiHeader = (item: OpenapiListItem) => {
-    window.location.search;
-    const href = "/" + item.key + window.location.search;
+    const href =
+      "/" +
+      item.key +
+      (typeof window === "undefined" ? "" : window.location.search);
     const children = (
       <div
         className={`p-4 cursor-pointer ${
