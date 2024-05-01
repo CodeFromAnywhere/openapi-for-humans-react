@@ -28,7 +28,7 @@
     "css": "tailwindcss -o css.css",
     "dev": "concurrently \"npm:dev:tw\" \"tsc -w\""
   },
-  "version": "0.0.35",
+  "version": "0.0.36",
   "type": "module",
   "dependencies": {
     "@chakra-ui/react": "^1.8.9",
@@ -38,9 +38,9 @@
     "@rjsf/validator-ajv8": "^5.17.0",
     "actionschema": "^0.0.34",
     "ajv": "^8.12.0",
-    "from-anywhere": "^0.0.23",
+    "from-anywhere": "^0.0.29",
     "json-schema": "^0.4.0",
-    "openapi-util": "^0.0.14",
+    "openapi-util": "^0.0.19",
     "qs": "^6.12.1",
     "react-markdown": "^9.0.1"
   }
