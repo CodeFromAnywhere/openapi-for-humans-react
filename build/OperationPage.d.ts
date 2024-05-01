@@ -7,6 +7,7 @@ export type OperationState = {
 };
 /** Page that shows a form, docs, examples, previous runs */
 export declare const OperationPage: (props: {
+    openapiUrl: string;
     operationDetails: OperationDetails;
     state: OperationState;
     setState: (state: OperationState) => void;
@@ -14,6 +15,6 @@ export declare const OperationPage: (props: {
     previousRuns?: {
         id: string;
         run: any;
-    }[];
-}) => import("react/jsx-runtime").JSX.Element;
+    }[] | undefined;
+}) => Promise<import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=OperationPage.d.ts.map

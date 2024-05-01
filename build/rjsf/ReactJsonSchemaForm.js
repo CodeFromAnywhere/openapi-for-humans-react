@@ -1,3 +1,4 @@
+"use client";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { ChakraProvider } from "@chakra-ui/react";
 import Form from "@rjsf/chakra-ui";

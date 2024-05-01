@@ -1,9 +1,9 @@
-"use client";
+"use server";
 
-import { useState } from "react";
 import { OperationDetails } from "./types";
-import { O } from "from-anywhere";
 import Markdown from "react-markdown";
+import { renderOpenapiForm } from "./renderOpenapiForm";
+import { HttpMethodEnum } from "openapi-util";
 
 export type OperationState = {
   /** State to prefil form with an example from the schema */
@@ -13,16 +13,24 @@ export type OperationState = {
 };
 
 /** Page that shows a form, docs, examples, previous runs */
-export const OperationPage = (props: {
+export const OperationPage = async (props: {
+  openapiUrl: string;
   operationDetails: OperationDetails;
   state: OperationState;
   setState: (state: OperationState) => void;
   /** Can be stored locally */
   previousRuns?: { id: string; run: any }[];
 }) => {
-  const { operationDetails, setState, state, previousRuns } = props;
+  const { operationDetails, setState, state, previousRuns, openapiUrl } = props;
 
-  const [formData, setFormData] = useState<O | undefined>({});
+  const { method, path } = operationDetails;
+  const openapiForm = await renderOpenapiForm({
+    method: method as HttpMethodEnum,
+    path,
+    openapiUri: openapiUrl,
+    withResponse: () => {},
+  });
+
   return (
     <div className="p-20">
       <Markdown
@@ -44,18 +52,7 @@ export const OperationPage = (props: {
         {operationDetails.operation?.description ||
           operationDetails.operation?.summary}
       </Markdown>
-      {/* <ReactJsonSchemaForm
-        schema={operationDetails.resolvedRequestBodySchema}
-        formData={formData}
-        id={operationDetails.id}
-        // TODO: remove this and alter the schema as booleans should then be strings
-        isBooleanTextField={false}
-        onChange={(v) => setFormData(v)}
-        onSubmit={() => {
-          console.log("SUBMIT BUTTON HIT");
-        }}
-        variableJsonSchema={undefined}
-      /> */}
+      {openapiForm}
     </div>
   );
 };

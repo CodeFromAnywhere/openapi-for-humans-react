@@ -53,7 +53,7 @@ export const getOpenapiOperations = async (
           method,
           operation,
           resolvedRequestBodySchema,
-          id: operation.operationId || path + "=" + method,
+          id: operation.operationId || path.slice(1) + "=" + method,
         };
       });
 

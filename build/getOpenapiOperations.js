@@ -33,7 +33,7 @@ export const getOpenapiOperations = async (openapiId, openapiUrl) => {
                 method,
                 operation,
                 resolvedRequestBodySchema,
-                id: operation.operationId || path + "=" + method,
+                id: operation.operationId || path.slice(1) + "=" + method,
             };
         });
         return pathMethods;

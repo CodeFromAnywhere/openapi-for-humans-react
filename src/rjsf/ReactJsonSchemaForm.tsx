@@ -1,3 +1,5 @@
+"use client";
+
 import { ChakraProvider } from "@chakra-ui/react";
 import Form from "@rjsf/chakra-ui";
 import validator from "@rjsf/validator-ajv8";

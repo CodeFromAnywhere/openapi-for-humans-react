@@ -12,9 +12,9 @@ export declare const useSuggestions: <T extends HTMLInputElement | HTMLTextAreaE
     value: string;
     onChange: (v: string) => void;
     variableTags: string[] | undefined;
-    isRootTemplateVariable?: boolean;
+    isRootTemplateVariable?: boolean | undefined;
 }) => {
-    onChangeSuggestions: (e: React.ChangeEvent<T>) => void;
+    onChangeSuggestions: (e: import("react").ChangeEvent<T>) => void;
     renderTags: () => import("react/jsx-runtime").JSX.Element | null;
     textAreaRef: import("react").RefObject<T>;
 };
