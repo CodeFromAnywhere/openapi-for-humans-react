@@ -1,4 +1,5 @@
-import { fetchOpenapi, notEmpty, } from "from-anywhere";
+import { notEmpty, } from "from-anywhere";
+import { fetchOpenapi } from "openapi-util";
 export const getOpenapiOperations = async (openapiId, openapiUrl) => {
     if (!openapiUrl) {
         return;

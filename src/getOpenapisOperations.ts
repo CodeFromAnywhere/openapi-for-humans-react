@@ -1,6 +1,6 @@
 import { notEmpty } from "from-anywhere";
-import { getOpenapiOperations } from "./getOpenapiOperations";
-import { OpenapiListItem } from "./types";
+import { getOpenapiOperations } from "./getOpenapiOperations.js";
+import { OpenapiListItem } from "./types.js";
 
 export const getOpenapisOperations = async (
   openapiList: OpenapiListItem[],

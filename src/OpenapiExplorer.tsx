@@ -6,11 +6,10 @@ import {
   OpenapiListItem,
   SearchResult,
   SearchType,
-} from "./types";
-import { ForwardRefExoticComponent, ReactNode, useState } from "react";
-import { Searchbar } from "./Searchbar";
-import { MatchingText } from "./MatchingText";
-import { makeComplexUrlStore } from "./makeComplexUrlStore";
+} from "./types.js";
+import { ForwardRefExoticComponent, ReactNode } from "react";
+import { MatchingText } from "./MatchingText.js";
+import { makeComplexUrlStore } from "./makeComplexUrlStore.js";
 
 /**
  * Component to search through one or multiple OpenAPIs.

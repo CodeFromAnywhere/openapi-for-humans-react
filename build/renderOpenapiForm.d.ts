@@ -30,7 +30,7 @@ export declare const renderOpenapiForm: <T extends {
     };
 }, P extends Keys<T["paths"]>, M extends keyof T["paths"][P] & HttpMethodEnum>(props: {
     /** You can provide a direct JSON import of the OpenAPI here just in order to gain typescript type inference for the paths and methods */
-    openapi?: T;
+    openapi?: T | undefined;
     openapiUri: string;
     path: P;
     method: M;

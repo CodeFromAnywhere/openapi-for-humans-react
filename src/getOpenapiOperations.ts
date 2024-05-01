@@ -1,10 +1,10 @@
 import {
   OpenapiOperationObject,
   OpenapiSchemaObject,
-  fetchOpenapi,
   notEmpty,
 } from "from-anywhere";
-import { OpenapiDetails } from "./types";
+import { OpenapiDetails } from "./types.js";
+import { fetchOpenapi } from "openapi-util";
 
 export const getOpenapiOperations = async (
   openapiId: string,

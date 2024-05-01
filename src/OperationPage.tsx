@@ -1,7 +1,7 @@
-import { OperationDetails } from "./types";
 import Markdown from "react-markdown";
-import { renderOpenapiForm } from "./renderOpenapiForm";
 import { HttpMethodEnum } from "openapi-util";
+import { OperationDetails } from "./types.js";
+import { renderOpenapiForm } from "./renderOpenapiForm.js";
 
 export type OperationState = {
   /** State to prefil form with an example from the schema */
