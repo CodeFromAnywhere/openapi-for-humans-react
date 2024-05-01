@@ -1,5 +1,3 @@
-"use server";
-
 import { Keys } from "from-anywhere";
 import { getFormSchema, HttpMethodEnum, submitOperation } from "openapi-util";
 import { ReactJsonSchemaForm } from "./rjsf/ReactJsonSchemaForm.js";

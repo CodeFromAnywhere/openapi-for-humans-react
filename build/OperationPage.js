@@ -1,4 +1,3 @@
-"use server";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import Markdown from "react-markdown";
 import { renderOpenapiForm } from "./renderOpenapiForm";
@@ -12,7 +11,7 @@ export const OperationPage = async (props) => {
         openapiUri: openapiUrl,
         withResponse: () => { },
     });
-    return (_jsxs("div", { className: "p-20", children: [_jsx(Markdown, { components: {
+    return (_jsxs("div", { className: "p-20", children: [_jsx("h1", { className: "text-3xl font-bold pb-10", children: operationDetails.id }), _jsx(Markdown, { components: {
                     h1: (props) => _jsx("h1", { className: "text-3xl py-8", children: props.children }),
                     h2: (props) => _jsx("h2", { className: "text-2xl py-8", children: props.children }),
                     code: (props) => _jsx("code", { className: "font-bold", children: props.children }),

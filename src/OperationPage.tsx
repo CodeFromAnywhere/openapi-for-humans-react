@@ -1,5 +1,3 @@
-"use server";
-
 import { OperationDetails } from "./types";
 import Markdown from "react-markdown";
 import { renderOpenapiForm } from "./renderOpenapiForm";
@@ -33,6 +31,7 @@ export const OperationPage = async (props: {
 
   return (
     <div className="p-20">
+      <h1 className="text-3xl font-bold pb-10">{operationDetails.id}</h1>
       <Markdown
         components={{
           h1: (props) => <h1 className="text-3xl py-8">{props.children}</h1>,

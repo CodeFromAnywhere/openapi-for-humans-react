@@ -1,4 +1,3 @@
-"use server";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { getFormSchema, submitOperation } from "openapi-util";
 import { ReactJsonSchemaForm } from "./rjsf/ReactJsonSchemaForm.js";
