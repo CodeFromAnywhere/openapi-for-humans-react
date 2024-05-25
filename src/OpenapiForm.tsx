@@ -1,5 +1,11 @@
 import { Keys, O } from "from-anywhere";
-import { FormContext, HttpMethodEnum, submitOperation } from "openapi-util";
+import {
+  FormContext,
+  HttpMethodEnum,
+  OpenapiDocument,
+  getFormContextFromOpenapi,
+  submitOperation,
+} from "openapi-util";
 import { ReactJsonSchemaForm } from "./rjsf/ReactJsonSchemaForm.js";
 import { useState } from "react";
 
@@ -20,21 +26,28 @@ export const OpenapiForm = <
         [key in HttpMethodEnum]?: OperationPartial;
       };
     };
-  },
+  } & OpenapiDocument,
   P extends Keys<T["paths"]>,
   M extends keyof T["paths"][P] & HttpMethodEnum,
 >(props: {
-  /** You can provide a direct JSON import of the OpenAPI here just in order to gain typescript type inference for the paths and methods */
+  /** You can provide a direct JSON import of the OpenAPI here just in order to gain typescript type inference for the paths and methods.
+   *
+   * If you provide this, formContext can be inferred and should be omitted.
+   */
   openapi?: T;
   path: P;
   method: M;
-  formContext: FormContext;
+  formContext?: FormContext;
 }) => {
-  const { method, path, formContext } = props;
+  const { method, path, formContext, openapi } = props;
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { schema, parameters, securitySchemes, servers } = formContext;
+  const { schema, parameters, securitySchemes, servers } = openapi
+    ? getFormContextFromOpenapi({ method, path, openapi })
+    : formContext
+    ? formContext
+    : ({} as Partial<FormContext>);
 
   //1. server-component: use getFormSchema (async function)
   //2. client-component: the resolved JSON Schema can be input into <RSJF/> ()
