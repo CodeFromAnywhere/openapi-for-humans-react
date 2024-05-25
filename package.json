@@ -28,7 +28,7 @@
     "css": "tailwindcss -o css.css",
     "dev": "concurrently \"npm:dev:tw\" \"tsc -w\""
   },
-  "version": "0.0.37",
+  "version": "0.0.38",
   "type": "module",
   "dependencies": {
     "@chakra-ui/react": "^1.8.9",
