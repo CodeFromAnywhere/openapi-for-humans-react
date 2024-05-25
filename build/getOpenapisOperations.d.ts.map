@@ -1,1 +1,1 @@
-{"version":3,"file":"getOpenapisOperations.d.ts","sourceRoot":"","sources":["../src/getOpenapisOperations.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,SAAS,CAAC;AAE1C,eAAO,MAAM,qBAAqB,gBACnB,eAAe,EAAE,gBAChB,MAAM,EAAE,GAAG,SAAS,gDAiBnC,CAAC"}
+{"version":3,"file":"getOpenapisOperations.d.ts","sourceRoot":"","sources":["../src/getOpenapisOperations.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,YAAY,CAAC;AAE7C,eAAO,MAAM,qBAAqB,gBACnB,eAAe,EAAE,gBAChB,MAAM,EAAE,GAAG,SAAS,mDAiBnC,CAAC"}

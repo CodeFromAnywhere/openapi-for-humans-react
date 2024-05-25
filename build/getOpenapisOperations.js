@@ -1,5 +1,5 @@
 import { notEmpty } from "from-anywhere";
-import { getOpenapiOperations } from "./getOpenapiOperations";
+import { getOpenapiOperations } from "./getOpenapiOperations.js";
 export const getOpenapisOperations = async (openapiList, selectedIds) => {
     const filteredList = openapiList.filter((item) => selectedIds && selectedIds.length > 0
         ? selectedIds.includes(item.key)

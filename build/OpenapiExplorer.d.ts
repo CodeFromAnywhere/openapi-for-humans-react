@@ -1,5 +1,5 @@
 import { O } from "from-anywhere";
-import { OpenapiListItem, SearchResult, SearchType } from "./types";
+import { OpenapiListItem, SearchResult, SearchType } from "./types.js";
 import { ForwardRefExoticComponent, ReactNode } from "react";
 /**
  * Component to search through one or multiple OpenAPIs.

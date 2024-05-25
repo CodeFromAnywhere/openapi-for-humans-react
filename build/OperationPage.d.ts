@@ -1,4 +1,5 @@
-import { OperationDetails } from "./types";
+import { FormContext } from "openapi-util";
+import { OperationDetails } from "./types.js";
 export type OperationState = {
     /** State to prefil form with an example from the schema */
     exampleIndex?: number;
@@ -9,12 +10,6 @@ export type OperationState = {
 export declare const OperationPage: (props: {
     openapiUrl: string;
     operationDetails: OperationDetails;
-    state: OperationState;
-    setState: (state: OperationState) => void;
-    /** Can be stored locally */
-    previousRuns?: {
-        id: string;
-        run: any;
-    }[] | undefined;
+    formContext: FormContext;
 }) => Promise<import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=OperationPage.d.ts.map

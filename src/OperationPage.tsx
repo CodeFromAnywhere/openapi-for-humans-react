@@ -1,7 +1,8 @@
 import Markdown from "react-markdown";
-import { HttpMethodEnum } from "openapi-util";
+import { FormContext, HttpMethodEnum } from "openapi-util";
 import { OperationDetails } from "./types.js";
-import { renderOpenapiForm } from "./renderOpenapiForm.js";
+import { OpenapiForm } from "./OpenapiForm.js";
+import { submitOperation } from "openapi-util";
 
 export type OperationState = {
   /** State to prefil form with an example from the schema */
@@ -14,20 +15,9 @@ export type OperationState = {
 export const OperationPage = async (props: {
   openapiUrl: string;
   operationDetails: OperationDetails;
-  state: OperationState;
-  setState: (state: OperationState) => void;
-  /** Can be stored locally */
-  previousRuns?: { id: string; run: any }[];
+  formContext: FormContext;
 }) => {
-  const { operationDetails, setState, state, previousRuns, openapiUrl } = props;
-
-  const { method, path } = operationDetails;
-  const openapiForm = await renderOpenapiForm({
-    method: method as HttpMethodEnum,
-    path,
-    openapiUri: openapiUrl,
-    withResponse: () => {},
-  });
+  const { openapiUrl, operationDetails, formContext } = props;
 
   return (
     <div className="p-20">
@@ -51,7 +41,11 @@ export const OperationPage = async (props: {
         {operationDetails.operation?.description ||
           operationDetails.operation?.summary}
       </Markdown>
-      {openapiForm}
+      <OpenapiForm
+        formContext={formContext}
+        method={operationDetails.method}
+        path={operationDetails.path}
+      />
     </div>
   );
 };

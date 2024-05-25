@@ -1,5 +1,6 @@
 import { OpenapiOperationObject, OpenapiSchemaObject } from "from-anywhere";
 import { OpenAPIDocument } from "actionschema/types";
+import { HttpMethodEnum } from "openapi-util";
 
 export type SearchType = "llm" | "semantic" | "regular";
 
@@ -31,7 +32,7 @@ export type OperationDetails = {
   id: string;
   openapiId: string;
   path: string;
-  method: string;
+  method: HttpMethodEnum;
   operation: OpenapiOperationObject;
   /** Can be added for convienience. Must resolve al references from the openapi */
   resolvedRequestBodySchema: OpenapiSchemaObject;

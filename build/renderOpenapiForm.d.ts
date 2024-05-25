@@ -1,5 +1,7 @@
-import { Keys } from "from-anywhere";
+import { OpenAPIV3 } from "openapi-types";
+import { Keys, O } from "from-anywhere";
 import { HttpMethodEnum } from "openapi-util";
+import { JSONSchema7 } from "json-schema";
 export type OperationPartial = {
     responses: {
         "200": {
@@ -39,6 +41,13 @@ export declare const renderOpenapiForm: <T extends {
      *
      * NB: tried to get the response type but it's nearly impossible from such a deep JSON. `json-schema-to-ts` doesn't work so well: Type instantiation is excessively deep and possibly infinite
      */
-    withResponse: (response: any, statusCode?: number, statusText?: string) => void;
+    onSubmit: (data: O | undefined, context: {
+        schema?: JSONSchema7 | undefined;
+        servers?: OpenAPIV3.ServerObject[] | undefined;
+        parameters?: OpenAPIV3.ParameterObject[] | undefined;
+        securitySchemes?: {
+            [key: string]: OpenAPIV3.SecuritySchemeObject;
+        } | undefined;
+    }) => void;
 }) => Promise<import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=renderOpenapiForm.d.ts.map

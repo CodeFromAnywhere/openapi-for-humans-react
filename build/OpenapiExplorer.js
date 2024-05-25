@@ -1,7 +1,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { MatchingText } from "./MatchingText";
-import { makeComplexUrlStore } from "./makeComplexUrlStore";
+import { MatchingText } from "./MatchingText.js";
+import { makeComplexUrlStore } from "./makeComplexUrlStore.js";
 /**
  * Component to search through one or multiple OpenAPIs.
  *

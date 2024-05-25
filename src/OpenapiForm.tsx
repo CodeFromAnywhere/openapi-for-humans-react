@@ -1,6 +1,7 @@
-import { Keys } from "from-anywhere";
-import { getFormSchema, HttpMethodEnum, submitOperation } from "openapi-util";
+import { Keys, O } from "from-anywhere";
+import { FormContext, HttpMethodEnum, submitOperation } from "openapi-util";
 import { ReactJsonSchemaForm } from "./rjsf/ReactJsonSchemaForm.js";
+import { useState } from "react";
 
 export type OperationPartial = {
   // requestBody: { content: { "application/json": { schema: any } } };
@@ -9,11 +10,10 @@ export type OperationPartial = {
   };
 };
 
-/** Simple Openapi form
- *
- * Async Server Component that uses a client component after loading the schema
+/**
+ * Simple Openapi form
  */
-export const renderOpenapiForm = async <
+export const OpenapiForm = <
   T extends {
     paths: {
       [key: string]: {
@@ -26,37 +26,35 @@ export const renderOpenapiForm = async <
 >(props: {
   /** You can provide a direct JSON import of the OpenAPI here just in order to gain typescript type inference for the paths and methods */
   openapi?: T;
-  openapiUri: string;
   path: P;
   method: M;
-  /**
-   * Do something after you get a response back
-   *
-   * NB: tried to get the response type but it's nearly impossible from such a deep JSON. `json-schema-to-ts` doesn't work so well: Type instantiation is excessively deep and possibly infinite
-   */
-  withResponse: (
-    response: any,
-    statusCode?: number,
-    statusText?: string,
-  ) => void;
+  formContext: FormContext;
 }) => {
-  const { openapiUri, method, path, withResponse } = props;
-  const { schema, servers, parameters } = await getFormSchema({
-    method,
-    path,
-    openapiUri,
-  });
+  const { method, path, formContext } = props;
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { schema, parameters, securitySchemes, servers } = formContext;
 
   //1. server-component: use getFormSchema (async function)
   //2. client-component: the resolved JSON Schema can be input into <RSJF/> ()
   return (
     <div>
+      {isLoading ? <div>Loading</div> : null}
+
       {schema ? (
         <ReactJsonSchemaForm
           schema={schema}
           // TODO: Fill this with localStorage data
           formData={undefined}
           onSubmit={(data) => {
+            if (!servers) {
+              alert("No servers");
+              return;
+            }
+
+            setIsLoading(true);
+
             let statusCode: number | undefined = undefined;
             let statusText: string | undefined = undefined;
             submitOperation({
@@ -65,6 +63,8 @@ export const renderOpenapiForm = async <
               servers,
               data: data || {},
               parameters,
+
+              securitySchemes,
             })
               .then(async (response) => {
                 statusCode = response.status;
@@ -74,9 +74,11 @@ export const renderOpenapiForm = async <
                 return json;
               })
               .then((result) => {
-                withResponse?.(result, statusCode, statusText);
+                setIsLoading(false);
+                console.log({ result });
               })
               .catch((e) => {
+                setIsLoading(false);
                 console.log(e);
               });
           }}

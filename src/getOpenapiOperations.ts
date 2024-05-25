@@ -4,7 +4,7 @@ import {
   notEmpty,
 } from "from-anywhere";
 import { OpenapiDetails } from "./types.js";
-import { fetchOpenapi } from "openapi-util";
+import { HttpMethodEnum, fetchOpenapi } from "openapi-util";
 
 export const getOpenapiOperations = async (
   openapiId: string,
@@ -50,7 +50,7 @@ export const getOpenapiOperations = async (
         return {
           openapiId,
           path,
-          method,
+          method: method as HttpMethodEnum,
           operation,
           resolvedRequestBodySchema,
           id: operation.operationId || path.slice(1) + "=" + method,
